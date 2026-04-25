@@ -1,0 +1,16 @@
+# Build output
+build/
+
+# Compiled binaries
+*.o
+*.out
+*.exe
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Miscellaneous
+git_ignore/
