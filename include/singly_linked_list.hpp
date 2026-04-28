@@ -12,7 +12,7 @@ class SinglyLinkedList {
       Node* next;
       T data;
 
-      Node(const T& value) : data(value), next(nullptr) {}
+      Node(const T& value) : next(nullptr), data(value) {}
     };
     
     // SinglyLinkedList: Class attributes
@@ -38,7 +38,7 @@ class SinglyLinkedList {
       }
 
     // Copy assignment deep copies other 
-    SinglyLinkedList& operator=(const Stack& other) {
+    SinglyLinkedList& operator=(const SinglyLinkedList& other) {
       if (this == &other) { return *this; }
 
       SinglyLinkedList temp(other);
@@ -130,27 +130,67 @@ class SinglyLinkedList {
     }
 
     // Remove element from the back of the list.
-    // Decrements length;
+    // Decrements length
     void pop_back() {
-      if (tail == nullptr) {
-        throw std::out_of_range("pop_back on an empty list");
-      }
-      else if (tail->next == nullptr) {
-        delete tail;
-      }
-      else {
-        Node* prev = tail;
-        Node* current = tail->next;
+			if (tail == nullptr) {
+			    throw std::out_of_range("pop_back on an empty list");
+			}
 
-        while (current) {
-          prev = current;
-          current = current->next;
-        }
-        
-        delete current;
-        tail = prev;
+			if (head == tail) {
+			    delete head;
+			    head = nullptr;
+			    tail = nullptr;
+			    length = 0;
+			    return;
+			}
+
+			Node* current = head;
+
+			while (current->next != tail) {
+			    current = current->next;
+			}
+
+			delete tail;
+			tail = current;
+			tail->next = nullptr;
+
+			--length;
+    }
+
+    // Return the value stored at head.
+    const T& front() const {
+      if (head == nullptr) {
+        throw std::out_of_range("front called on an empty list");
       }
-      --length;
+
+      return head->data;
+    }
+
+    // Return the value stored at head.
+    T front() {
+      if (head == nullptr) {
+        throw std::out_of_range("front called on an empty list");
+      }
+
+      return head->data;
+    }
+
+    // Return the value stored at tail.
+    const T& back() const {
+      if (tail == nullptr) {
+        throw std::out_of_range("back called on an empty list");
+      }
+
+      return tail->data;
+    }
+
+    // Return the value stored at tail.
+    T back() {
+      if (tail == nullptr) {
+        throw std::out_of_range("back called on an empty list");
+      }
+
+      return tail->data;
     }
     
     // Get data stored at the given index.
@@ -177,7 +217,7 @@ class SinglyLinkedList {
 
     // Get data stored at the given index.
     // With bounds checking.
-    T at(std::size_t idx) {
+    T& at(std::size_t idx) {
       if (idx >= length) {
         throw std::out_of_range("SinglyLinkedList: index out of range");
       }
@@ -192,7 +232,7 @@ class SinglyLinkedList {
     
     // Get data stored at the given index.
     // With bounds checking.
-    const T& at(std::size_t idx) {
+    const T& at(std::size_t idx) const {
       if (idx >= length) {
         throw std::out_of_range("SinglyLinkedList: index out of range");
       }
@@ -215,8 +255,8 @@ class SinglyLinkedList {
       Node* current = head;
 
       while (current) {
-        node* next = current->next;
-        current->next = previous;
+        Node* next = current->next;
+        current->next = prev;
 
         prev = current;
         current = next;
@@ -230,7 +270,7 @@ class SinglyLinkedList {
       while (head) { pop_front(); }
     }
 
-    const std::size_t size() const { return length; }
-    const bool empty() const { return length == 0; }
+    std::size_t size() const { return length; }
+    bool empty() const { return length == 0; }
 };
 
